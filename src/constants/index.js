@@ -1,0 +1,1 @@
+export const logo = "https://macademy.uz/assets/img/logo-new.svg"

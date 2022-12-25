@@ -1,20 +1,32 @@
 import React, { useState } from "react";
 import { logo } from "../constants";
 import { Input } from "../ui";
-import {useDispatch, useSelector} from 'react-redux'
-import {registerUserStart} from '../slice/auth'
-function Register(props) {
+import { useDispatch, useSelector } from "react-redux";
+import {
+  registerUserStart,
+  registerUserSuccess,
+  registerUserFailure,
+} from "../slice/auth";
+import  AuthService  from "../service/auth";
+function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const dispatch = useDispatch()
-  const {isLoading} = useSelector(state=>state.auth)
+  const dispatch = useDispatch();
+  const { isLoading } = useSelector((state) => state.auth);
 
-  const authorHandler = e=>{
-    e.preventDefault()
-    dispatch(registerUserStart())
-
-  }
+  const authorHandler = async (e) => {
+    e.preventDefault();
+    dispatch(registerUserStart());
+    const user = { username: name, email, password };
+    try {
+      const response = await AuthService.userRegister(user);
+      console.log(response);
+      console.log(user);
+      dispatch(registerUserSuccess());
+    } catch (error) {}
+    dispatch(registerUserFailure());
+  };
   return (
     <body className="text-center">
       <main className="form-signin">
@@ -24,10 +36,20 @@ function Register(props) {
 
           <Input label={"Username"} state={name} setState={setName} />
           <Input label={"Email addres"} state={email} setState={setEmail} />
-          <Input label={"Password"} type={'password'} state={password} setState={setPassword} />
+          <Input
+            label={"Password"}
+            type={"password"}
+            state={password}
+            setState={setPassword}
+          />
 
-          <button className="w-100 btn btn-lg btn-primary my-2" disabled={isLoading} type="submit" onClick={authorHandler}>
-            {isLoading ? 'Loading...' : 'Sign Up'}
+          <button
+            className="w-100 btn btn-lg btn-primary my-2"
+            disabled={isLoading}
+            type="submit"
+            onClick={authorHandler}
+          >
+            {isLoading ? "Loading..." : "Sign Up"}
           </button>
         </form>
       </main>

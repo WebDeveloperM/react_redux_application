@@ -2,18 +2,17 @@ import React, { useState } from "react";
 import { logo } from "../constants";
 import { Input } from "../ui";
 import {useDispatch, useSelector} from 'react-redux'
-import {authorLoading} from '../slice/author'
+import {registerUserStart} from '../slice/auth'
 function Register(props) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch()
-  const {isLoading} = useSelector(state=>state.author)
-  console.log(isLoading);
+  const {isLoading} = useSelector(state=>state.auth)
 
   const authorHandler = e=>{
     e.preventDefault()
-    dispatch(authorLoading())
+    dispatch(registerUserStart())
 
   }
   return (

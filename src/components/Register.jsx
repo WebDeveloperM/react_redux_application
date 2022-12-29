@@ -2,12 +2,8 @@ import React, { useState } from "react";
 import { logo } from "../constants";
 import { Input } from "../ui";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  registerUserStart,
-  registerUserSuccess,
-  registerUserFailure,
-} from "../slice/auth";
-import  AuthService  from "../service/auth";
+import { singUserStart, singUserSuccess, singUserFailure } from "../slice/auth";
+import AuthService from "../service/auth";
 function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -17,15 +13,15 @@ function Register() {
 
   const authorHandler = async (e) => {
     e.preventDefault();
-    dispatch(registerUserStart());
+    dispatch(singUserStart());
     const user = { username: name, email, password };
     try {
       const response = await AuthService.userRegister(user);
-      console.log(response);
-      console.log(user);
-      dispatch(registerUserSuccess());
-    } catch (error) {}
-    dispatch(registerUserFailure());
+      dispatch(singUserSuccess(response.user));
+    } catch (error) {
+      console.log(error);
+      dispatch(singUserFailure(error.response.data.errors));
+    }
   };
   return (
     <body className="text-center">

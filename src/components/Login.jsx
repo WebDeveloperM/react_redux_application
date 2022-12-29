@@ -2,17 +2,27 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logo } from "../constants";
 import { Input } from "../ui";
-import {loginUserStart} from '../slice/auth'
+import { singUserStart, singUserFailure, singUserSuccess } from "../slice/auth";
+import AuthService from "../service/auth";
 function Login(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const dispatch = useDispatch()
-  const {isLoading} = useSelector(state=>state.auth)
-  
-  const loginHandler = e=>{
-    e.preventDefault()
-    dispatch(loginUserStart())
-  }
+  const dispatch = useDispatch();
+  const { isLoading } = useSelector((state) => state.auth);
+
+  const loginHandler = async (e) => {
+    e.preventDefault();
+    dispatch(singUserStart());
+    const user = { email, password };
+    try {
+      const response = await AuthService.userLogin(user);
+      console.log(response.user);
+      dispatch(singUserSuccess(response.user));
+    } catch (error) {
+      console.log(error);
+      dispatch(singUserFailure(error.response.data.errors));
+    }
+  };
   return (
     <body className="text-center">
       <main className="form-signin">
@@ -21,9 +31,19 @@ function Login(props) {
           <h1 className="h3 mb-3 fw-normal">Please sign in</h1>
 
           <Input label={"Email addres"} state={email} setState={setEmail} />
-          <Input label={"Password"} type={'password'} state={password} setState={setPassword} />
+          <Input
+            label={"Password"}
+            type={"password"}
+            state={password}
+            setState={setPassword}
+          />
 
-          <button className="w-100 btn btn-lg btn-primary my-2" disabled={isLoading} type="submit" onClick={loginHandler}>
+          <button
+            className="w-100 btn btn-lg btn-primary my-2"
+            disabled={isLoading}
+            type="submit"
+            onClick={loginHandler}
+          >
             {isLoading ? "Loading..." : "Sign In"}
           </button>
         </form>

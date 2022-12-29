@@ -4,6 +4,7 @@ import { Input } from "../ui";
 import { useDispatch, useSelector } from "react-redux";
 import { singUserStart, singUserSuccess, singUserFailure } from "../slice/auth";
 import AuthService from "../service/auth";
+import { ValidationError } from "./";
 function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -19,17 +20,17 @@ function Register() {
       const response = await AuthService.userRegister(user);
       dispatch(singUserSuccess(response.user));
     } catch (error) {
-      console.log(error);
+   
       dispatch(singUserFailure(error.response.data.errors));
     }
   };
   return (
     <body className="text-center">
       <main className="form-signin">
-        <form className="w-25 m-auto">
+        <form className="m-auto w-25">
           <img className="my-2" src={logo} alt="" width="100" height="57" />
           <h1 className="h3 mb-3 fw-normal">Please sign up</h1>
-
+          <ValidationError />
           <Input label={"Username"} state={name} setState={setName} />
           <Input label={"Email addres"} state={email} setState={setEmail} />
           <Input

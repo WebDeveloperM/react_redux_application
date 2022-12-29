@@ -4,6 +4,7 @@ import { logo } from "../constants";
 import { Input } from "../ui";
 import { singUserStart, singUserFailure, singUserSuccess } from "../slice/auth";
 import AuthService from "../service/auth";
+import { ValidationError } from "./";
 function Login(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -16,12 +17,10 @@ function Login(props) {
     const user = { email, password };
     try {
       const response = await AuthService.userLogin(user);
-      console.log(response.user);
       dispatch(singUserSuccess(response.user));
     } catch (error) {
-      console.log(error);
       dispatch(singUserFailure(error.response.data.errors));
-    }
+    } 
   };
   return (
     <body className="text-center">
@@ -29,7 +28,7 @@ function Login(props) {
         <form className="w-25 m-auto">
           <img className="my-2" src={logo} alt="" width="100" height="57" />
           <h1 className="h3 mb-3 fw-normal">Please sign in</h1>
-
+          <ValidationError />
           <Input label={"Email addres"} state={email} setState={setEmail} />
           <Input
             label={"Password"}

@@ -1,16 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logo } from "../constants";
 import { Input } from "../ui";
 import { singUserStart, singUserFailure, singUserSuccess } from "../slice/auth";
 import AuthService from "../service/auth";
 import { ValidationError } from "./";
+import { useNavigate } from "react-router-dom";
 function Login(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
-  const { isLoading } = useSelector((state) => state.auth);
-
+  const { isLoading, loggidIn } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
   const loginHandler = async (e) => {
     e.preventDefault();
     dispatch(singUserStart());
@@ -18,10 +19,17 @@ function Login(props) {
     try {
       const response = await AuthService.userLogin(user);
       dispatch(singUserSuccess(response.user));
+      navigate("/");
     } catch (error) {
       dispatch(singUserFailure(error.response.data.errors));
-    } 
+    }
   };
+
+  useEffect(() => {
+    if (loggidIn) {
+      navigate("/");
+    }
+  }, []);
   return (
     <body className="text-center">
       <main className="form-signin">

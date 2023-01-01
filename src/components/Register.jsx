@@ -24,6 +24,7 @@ function Register() {
       navigate("/");
     } catch (error) {
       dispatch(singUserFailure(error.response.data.errors));
+      console.log(error);
     }
   };
 
@@ -31,7 +32,7 @@ function Register() {
     if (loggidIn) {
       navigate("/");
     }
-  }, []);
+  }, [loggidIn]);
 
   return (
     <body className="text-center">

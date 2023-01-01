@@ -29,7 +29,7 @@ function Login(props) {
     if (loggidIn) {
       navigate("/");
     }
-  }, []);
+  }, [loggidIn]);
   return (
     <body className="text-center">
       <main className="form-signin">

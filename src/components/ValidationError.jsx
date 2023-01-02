@@ -14,7 +14,7 @@ function ValidationError() {
   return (
     error !== null &&
     errorMessage().map((error) => (
-      <div key={error} class="alert alert-danger m-1 p-0" role="alert">
+      <div key={error} className="alert alert-danger m-1 p-0" role="alert">
         {error}
       </div>
     ))

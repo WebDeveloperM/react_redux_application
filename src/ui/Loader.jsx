@@ -2,8 +2,8 @@ import React from "react";
 
 function Loader(props) {
   return (
-    <div class="spinner-grow text-info d-block mx-auto my-4" role="status">
-      <span class="visually-hidden">Loading...</span>
+    <div className="spinner-grow text-info d-block mx-auto my-4" role="status">
+      <span className="visually-hidden">Loading...</span>
     </div>
   );
 }

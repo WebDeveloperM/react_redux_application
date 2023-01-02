@@ -1,10 +1,12 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { Loader } from "../ui";
+import {useNavigate} from 'react-router-dom'
 function Main(props) {
   const { articles, isLoading } = useSelector((state) => state.article);
-  return (
-    <div className="container">
+  const navigate = useNavigate()
+  return  (
+    <>
       {isLoading && <Loader />}
       <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
         {articles.map((item) => (
@@ -33,6 +35,7 @@ function Main(props) {
                   <button
                     type="button"
                     className="btn btn-sm btn-outline-success"
+                    onClick={()=>{navigate(`/article/${item.slug}`)}}
                   >
                     View
                   </button>
@@ -57,7 +60,7 @@ function Main(props) {
           </div>
         ))}
       </div>
-    </div>
+    </>
   );
 }
 

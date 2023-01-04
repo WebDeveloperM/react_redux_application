@@ -5,7 +5,7 @@ function Input({ label, state, setState, type='text' }) {
     <div className="form-floating mb-1">
       <input
         type={type}
-        className="form-control"
+        className="form-control "
         id="floatingPassword"
         placeholder={label}
         value={state}

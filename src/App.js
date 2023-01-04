@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import { Main, Register, Login, Navbar, ArticleDetail } from "./components";
+import { Main, Register, Login, Navbar, ArticleDetail, CreateArticle } from "./components";
 import AuthService from "./service/auth";
 import { useEffect } from "react";
 import { singUserSuccess } from "./slice/auth";
@@ -45,6 +45,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
          <Route path="/articles/:id" element={<ArticleDetail/>} />
+         <Route path="/create-article" element={<CreateArticle/>} />
       </Routes>
     </div>
         

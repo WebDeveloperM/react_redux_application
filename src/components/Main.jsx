@@ -35,7 +35,7 @@ function Main(props) {
                   <button
                     type="button"
                     className="btn btn-sm btn-outline-success"
-                    onClick={()=>{navigate(`/article/${item.slug}`)}}
+                    onClick={()=>{navigate(`/articles/${item.slug}`)}}
                   >
                     View
                   </button>

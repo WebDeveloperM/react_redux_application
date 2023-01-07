@@ -1,11 +1,35 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
 import { Loader } from "../ui";
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
+import ArticleService from "../service/article";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getArticleSuccess,
+  getArticleStart,
+  getArticleFailure,
+} from "../slice/article";
+
+
 function Main(props) {
   const { articles, isLoading } = useSelector((state) => state.article);
-  const navigate = useNavigate()
-  return  (
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const getArticles = async () => {
+    dispatch(getArticleStart());
+    try {
+      const response = await ArticleService.getArticles();
+      dispatch(getArticleSuccess(response.articles));
+    } catch (error) {
+      dispatch(getArticleFailure(error));
+    }
+  };
+
+  useEffect(() => {
+    getArticles();
+  }, []);
+
+  return (
     <>
       {isLoading && <Loader />}
       <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
@@ -35,7 +59,9 @@ function Main(props) {
                   <button
                     type="button"
                     className="btn btn-sm btn-outline-success"
-                    onClick={()=>{navigate(`/articles/${item.slug}`)}}
+                    onClick={() => {
+                      navigate(`/articles/${item.slug}`);
+                    }}
                   >
                     View
                   </button>

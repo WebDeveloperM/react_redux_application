@@ -1,15 +1,19 @@
 import { Routes, Route } from "react-router-dom";
-import { Main, Register, Login, Navbar, ArticleDetail, CreateArticle } from "./components";
+import {
+  Main,
+  Register,
+  Login,
+  Navbar,
+  ArticleDetail,
+  CreateArticle,
+} from "./components";
 import AuthService from "./service/auth";
 import { useEffect } from "react";
 import { singUserSuccess } from "./slice/auth";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { getItem } from "./helpers/persistence-storage";
-import ArticleService from "./service/article";
-import {getArticleSuccess, getArticleStart, getArticleFailure} from './slice/article'
 function App() {
   const dispatch = useDispatch();
-  const { isLoading } = useSelector((state) => state.article);
   const getUser = async () => {
     try {
       const response = await AuthService.getUser();
@@ -19,37 +23,25 @@ function App() {
     }
   };
 
-  const getArticles = async () => {
-    dispatch(getArticleStart())
-    try {
-      const response = await ArticleService.getArticles()
-      dispatch(getArticleSuccess(response.articles))
-    } catch (error) {
-      dispatch(getArticleFailure(error))
-    }
-  };
-
   useEffect(() => {
     const token = getItem("Token");
     if (token) {
       getUser();
     }
-    getArticles();
   }, []);
   return (
     <div>
       <Navbar />
       <div className="container">
-      <Routes>
-        <Route path="/" element={<Main />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-         <Route path="/articles/:id" element={<ArticleDetail/>} />
-         <Route path="/create-article" element={<CreateArticle/>} />
-      </Routes>
-    </div>
-        
+        <Routes>
+          <Route path="/" element={<Main />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/articles/:id" element={<ArticleDetail />} />
+          <Route path="/create-article" element={<CreateArticle />} />
+        </Routes>
       </div>
+    </div>
   );
 }
 

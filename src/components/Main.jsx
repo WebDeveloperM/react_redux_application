@@ -9,9 +9,9 @@ import {
   getArticleFailure,
 } from "../slice/article";
 
-
 function Main(props) {
   const { articles, isLoading } = useSelector((state) => state.article);
+  const { loggidIn, user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -25,6 +25,14 @@ function Main(props) {
     }
   };
 
+  const deleteArticele = async (slug) => {
+    try {
+      await ArticleService.deleteArticle(slug);
+      getArticles()
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
     getArticles();
   }, []);
@@ -65,18 +73,23 @@ function Main(props) {
                   >
                     View
                   </button>
-                  <button
-                    type="button"
-                    className="btn btn-sm btn-outline-secondary"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-sm btn-outline-danger"
-                  >
-                    Edit
-                  </button>
+                  {loggidIn && user.username === item.author.username && (
+                    <>
+                      <button
+                        type="button"
+                        className="btn btn-sm btn-outline-secondary"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-sm btn-outline-danger"
+                        onClick={()=>deleteArticele(item.slug)}
+                      >
+                        Delete
+                      </button>
+                    </>
+                  )}
                 </div>
                 <small className="text-muted fw-bold text-capitalize">
                   {item.author.username}
